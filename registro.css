@@ -1,0 +1,40 @@
+.y {
+    background-color: rgb(110, 102, 102);
+    border: none;
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition-duration: 0.4s;
+
+}
+
+.y:hover {
+    background-image: linear-gradient(darkslategrey, silver);
+}
+
+html {
+    background-image: radial-gradient(silver, darkslategray);
+    min-height: 100vh;
+}
+
+form {
+    margin-left: 30%;
+    margin-right: 30%;
+    margin-bottom: 3%;
+    border: 0px solid antiquewhite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.a {
+    margin-left: 30%;
+    margin-right: 30%;
+    border: 1px solid antiquewhite;
+}

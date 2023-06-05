@@ -1,0 +1,55 @@
+.x {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+
+.z {
+    background-color:darkgray;
+    border: none;
+    color: rgb(255, 255, 255);
+    padding: 10px 20px;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition-duration: 0.4s;
+
+
+}
+
+.z:hover, .zz:hover {
+    background-color: gray;
+    background-image: radial-gradient(darkslategray, silver);
+}
+
+.zz {
+    background-color: darkslategray;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition-duration: 0.4s;
+    outline: none;
+}
+
+
+
+.perfil {
+    text-align: center;
+}
+
+div img {
+    border-radius: 100%;
+    text-align: center;
+}
+
+html {
+    min-height: 100vh;
+    background-image: radial-gradient(silver, darkslategray);
+}
