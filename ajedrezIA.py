@@ -1,5 +1,5 @@
 import sys
-import random  # pylint: disable=unused-import
+import random  
 import pygame
 import chess
 pygame.init()
