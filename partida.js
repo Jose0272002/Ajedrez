@@ -14,7 +14,7 @@ function cargarEventos() {
 
 	let piezas = document.querySelectorAll('.pieza');
 	let casillas = document.querySelectorAll('td');
-	
+
 	piezas.forEach(function (elemento) {
 		elemento.addEventListener('click', seleccionarPieza);
 	});
@@ -29,8 +29,8 @@ function cargarEventos() {
 	for (pieza of piezas) {
 		tipoPieza.push(pieza.id)
 		casillasOcupadas.push(pieza.parentNode.id)
-	} 
-	enviar(tipoPieza, casillasOcupadas)
+	}
+
 }
 
 
@@ -426,17 +426,22 @@ function marcarCasillasDisponibles(casillas) {
 function reyEnJaque() {
 	if (document.querySelector('.rey.' + (turno === 'blanco' ? 'negro' : 'blanco'))) {
 		let rey = document.querySelector('.rey.' + turno);
-		let posicionRey = rey.parentNode.id;
+		if (rey == null) {
 
-		let piezasOponente = document.querySelectorAll('.pieza.' + (turno === 'blanco' ? 'negro' : 'blanco'));
+		} else {
+			let posicionRey = rey.parentNode.id;
 
-		for (pieza of piezasOponente) {
-			let posicionesAtacadas = obtenerCasillasDisponibles(pieza.parentNode.id);
-			if (posicionesAtacadas.includes(posicionRey)) {
-				return true;
+			let piezasOponente = document.querySelectorAll('.pieza.' + (turno === 'blanco' ? 'negro' : 'blanco'));
+
+			for (pieza of piezasOponente) {
+				let posicionesAtacadas = obtenerCasillasDisponibles(pieza.parentNode.id);
+				if (posicionesAtacadas.includes(posicionRey)) {
+					return true;
+				}
+				console.log()
 			}
-			console.log()
 		}
+
 
 		return false;
 	} else {
@@ -445,33 +450,34 @@ function reyEnJaque() {
 
 }
 
-function impedirMovimientos(){
-	if (reyEnJaque===true){
-		
-	}
-}
+
 function mostrarJaque() {
 	if (reyEnJaque() === 1) {
 		alert("jaque mate")
-		alert("se acabó")
-		alert("victoria " + turno)
+		finalizarTemporizador()
+		let ganador = turno;
+		enviar(ganador)
+		alert("victoria " + ganador)
+		window.history.back()
+
 	}
 	else if (document.querySelector('.rey.' + (turno === 'blanco' ? 'negro' : 'blanco'))) {
 		let rey = document.querySelector('.rey.' + turno);
-		let posicionRey = rey.parentNode.id;
-		let rey2 = document.querySelector('.rey.' + (turno === 'blanco' ? 'negro' : 'blanco'));
-		let posicionRey2 = rey.parentNode.id;
+		if (rey){
+			let posicionRey = rey.parentNode.id;
 
 		if (reyEnJaque() === true) {
 			document.getElementById(posicionRey).classList.add("jaque")
 		}
 		else {
-			document.getElementById(posicionRey2).classList.remove("jaque")
+			document.getElementById(posicionRey).classList.remove("jaque")
 			let casillas = document.querySelectorAll("td")
 			for (casilla of casillas) {
 				casilla.classList.remove("jaque")
 			}
 		}
+		}
+		
 	}
 }
 
@@ -490,65 +496,67 @@ var cuentaRegresivaElemento = document.getElementById("temporizador");
 
 // Función para actualizar la cuenta regresiva
 function actualizarCuentaRegresiva() {
-  // Obtener la fecha y hora actual
-  var ahora = new Date().getTime();
+	// Obtener la fecha y hora actual
+	var ahora = new Date().getTime();
 
-  // Calcular la diferencia entre la fecha y hora actual y la fecha y hora objetivo
-  var diferencia = tiempoObjetivo - ahora;
+	// Calcular la diferencia entre la fecha y hora actual y la fecha y hora objetivo
+	var diferencia = tiempoObjetivo - ahora;
 
-  // Calcular los minutos y segundos restantes
-  var minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
-  var segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+	// Calcular los minutos y segundos restantes
+	var minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+	var segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
 
-  // Mostrar la cuenta regresiva en el elemento HTML
-  cuentaRegresivaElemento.innerHTML = minutos + " minutos " + segundos + " segundos";
+	// Mostrar la cuenta regresiva en el elemento HTML
+	cuentaRegresivaElemento.innerHTML = minutos + " minutos " + segundos + " segundos";
 
-  // Si la cuenta regresiva ha terminado, mostrar un mensaje o realizar alguna acción
-  if (diferencia < 0 && turno==="negro") {
-    cuentaRegresivaElemento.innerHTML = "¡Tiempo terminado! victoria blancas";
-  }
-  else if (diferencia < 0 && turno==="blanco") {
-    cuentaRegresivaElemento.innerHTML = "¡Tiempo terminado! victoria negras";
-  }
+	// Si la cuenta regresiva ha terminado, mostrar un mensaje o realizar alguna acción
+	if (diferencia < 0 && turno === "negro") {
+		cuentaRegresivaElemento.innerHTML = "¡Tiempo terminado! victoria blancas";
+		ganador = "blanco"
+		finalizarTemporizador()
+		alert("gana " + ganador + " por tiempo")
+		enviar(ganador)
+
+	}
+	else if (diferencia < 0 && turno === "blanco") {
+		cuentaRegresivaElemento.innerHTML = "¡Tiempo terminado! victoria negras";
+		ganador = "negro"
+		finalizarTemporizador()
+		alert("gana " + ganador + " por tiempo")
+		enviar(ganador)
+
+	}
 }
 function iniciarTemporizador() {
 	// Obtener la fecha y hora objetivo para el primer temporizador sumando la duración en milisegundos a la fecha y hora actual
 	tiempoObjetivo = new Date().getTime() + duracionMilisegundos;
-  
+
 	// Actualizar la cuenta regresiva del primer temporizador cada segundo
 	temporizador = setInterval(actualizarCuentaRegresiva, 1000);
-  }
-function reiniciarTemporizador(){
+}
+function finalizarTemporizador() {
+	clearTimeout(temporizador);
+	temporizador = null;
+}
+function reiniciarTemporizador() {
 	clearInterval(temporizador)
 	iniciarTemporizador()
 }
 iniciarTemporizador()
 
 
-function enviar(x, y) {
-	// Crear el objeto XMLHttpRequest
-	var xhr = new XMLHttpRequest();
-
-	// Definir la función que se ejecutará cuando la petición cambie de estado
-	xhr.onreadystatechange = function () {
-		// Si la petición se completó con éxito
-		if (xhr.readyState == 4 && xhr.status == 200) {
-			// Mostrar la respuesta del servidor
-			console.log(xhr.responseText);
-		}
+function enviar(x) {
+	const xhttp = new XMLHttpRequest();
+	xhttp.onload = function () {
+		document.getElementById("x").innerHTML = this.responseText;
 	};
-
-	// Abrir la conexión con el servidor
-	xhr.open("POST", "partida.php", true);
-
-	// Crear un objeto FormData y agregar los datos
-	
-	var formData = new FormData();
-	formData.append('casillas', JSON.stringify(x));
-	formData.append('piezas', JSON.stringify(y));
-
-	// Enviar los datos al servidor
-	xhr.send(formData);
+	xhttp.open("POST", "partida.php", true);
+	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	alert("FCYTC")
+	console.log(x)
+	xhttp.send("ganador=" + encodeURIComponent(JSON.stringify(x)));
 }
+
+
 
 

@@ -3,8 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <script src="https://www.google.com/recaptcha/api.js?onload=onloadCallback&render=explicit" async defer>
-    </script>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <link rel="stylesheet" type="text/css" href="registro.css" />
 </head>
 
@@ -14,13 +13,13 @@
         <form id="form" action="registro.php" method="post">
             <h1 style="color:white;">Registro</h1>
             <span style="color:white;">Nombre <br><input type="text" name="nombre" id="nombre required"></span> <br>
-            <span style="color:white;">Usuarios <br><input type="text" name="user" id="user" required></span><br>
+            <span style="color:white;">Usuario <br><input type="text" name="user" id="user" required></span><br>
             <span style="color:white;">1º Apellido<br><input type="text" name="ap1" id="ap1" required></span><br>
             <span style="color:white;">2º Apellido<br><input type="text" name="ap2" id="ap2"></span><br>
-            <span style="color:white;">Contraseña <br><input type="password" name="pass" id="pass" required></span><br><span
-                style="visibility:hidden; color:white; background-color:red;" id="cnv">debe tener mínimo 8 caracteres </span><br>
-            <span style="color:white;">Contraseña<br><input type="password" name="pass2" id="pass2" required></span><br> <span
-                style="visibility:hidden; color:white; background-color:red;" id="cnc">contraseña errónea</span><br>
+            <span style="color:white;">Contraseña <br><input type="password" name="pass" id="pass" required></span><br><span style="visibility:hidden; color:white; background-color:red;" id="cnv">debe tener mínimo 8 caracteres </span><br>
+            <span style="color:white;">Repetir Contraseña<br><input type="password" name="pass2" id="pass2" required></span><br> <span style="visibility:hidden; color:white; background-color:red;" id="cnc">contraseña errónea</span><br>
+            
+            <div class="g-recaptcha" data-sitekey="6LdAt5EmAAAAANu34DOZKlqM_1WpFFyYe0kRElio"></div>
             <br><input type="submit" value="Registrarse" class="y">
 
         </form>
@@ -82,7 +81,6 @@
 
                 if (mysqli_query($conn, $sql)) {
                     echo "Usuario creado ";
-                    echo "La contraseña tiene al menos 8 caracteres.";
                 } else {
                     echo "error: " . $sql . "<br>" . mysqli_error($conn);
                 }

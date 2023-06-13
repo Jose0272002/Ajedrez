@@ -22,16 +22,16 @@
         $password = "";
         $conn = mysqli_connect($servername, $username, $password, $database);
 
-        if (!$conn) {
-            die("connection failed: " . mysqli_connect_error());
-        }
+            if (!$conn) {
+                die("connection failed: " . mysqli_connect_error());
+            }
 
-        $sql = "select nombre,apellido1,apellido2,id,user from usuario where user='$user' and contrasena=md5('$pass')";
+            $sql = "select nombre,apellido1,apellido2,id,user from usuario where user='$user' and contrasena=md5('$pass')";
 
-        if (mysqli_query($conn, $sql)) {
+            if (mysqli_query($conn, $sql)) {
 
-            $resultado = mysqli_query($conn, $sql);
-            $fila = mysqli_fetch_row($resultado);
+                $resultado = mysqli_query($conn, $sql);
+                $fila = mysqli_fetch_row($resultado);
             if (isset($fila)) { //comprueba la select
                 $ima = scandir("./dirimg");
                 foreach ($ima as $i) { //comprueba si el directorio de la imagenes
