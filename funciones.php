@@ -96,4 +96,3 @@ function recortar($file, $id)
     }
 
 }
-?>

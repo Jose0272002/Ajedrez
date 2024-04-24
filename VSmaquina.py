@@ -1,7 +1,7 @@
 import sys
-import random  # pylint: disable=unused-import
 import pygame
 import chess
+
 pygame.init()
 board = chess.Board()
 
@@ -17,6 +17,7 @@ BLACK = (0, 0, 0)
 
 class Node:
     def __init__(self, row, col, width):
+        # Inicializa una casilla con su fila, columna y posición en la ventana
         self.row = row
         self.col = col
         self.x = int(col * width)
@@ -24,14 +25,16 @@ class Node:
         self.colour = WHITE
 
     def draw(self, WIN):
+        # Dibuja la casilla en la ventana
         pygame.draw.rect(WIN, self.colour, (self.x, self.y, WIDTH / 8, WIDTH / 8))
 
     def setup(self, WIN,boardM):
-        
         if boardM[self.row][self.col] != "None":
-                WIN.blit(pygame.image.load(self.getImage(boardM[self.row][self.col])), (self.x, self.y))
+            # Configura la imagen de la pieza en la casilla
+            WIN.blit(pygame.image.load(self.getImage(boardM[self.row][self.col])), (self.x, self.y))
     
     def getImage(self,letter):
+        # Devuelve la ruta de la imagen correspondiente a la letra de la pieza de ajedrez
         if letter == 'r':
             return "Images/b_rook.png"
         if letter == 'n':
@@ -61,6 +64,7 @@ class Node:
         return ""
 
 def make_grid(rows, width):
+    # Crea una cuadrícula de casillas
     grid = []
     gap = WIDTH // rows
     print(gap)
@@ -74,6 +78,7 @@ def make_grid(rows, width):
     return grid
 
 def draw_grid(win, rows, width):
+    # Dibuja las líneas de la cuadrícula en la ventana
     gap = width // 8
     for i in range(rows):
         pygame.draw.line(win, BLACK, (0, i * gap), (width, i * gap))
@@ -81,6 +86,7 @@ def draw_grid(win, rows, width):
             pygame.draw.line(win, BLACK, (j * gap, 0), (j * gap, width))
 
 def update_display(win, grid, rows, width):
+    # Actualiza la ventana con el estado actual del tablero
     boardM = []
     for i in range(8):
         arr = [str(board.piece_at(chess.Square((i*8+j)))) for j in range(8)]
@@ -94,6 +100,7 @@ def update_display(win, grid, rows, width):
     pygame.display.update()
 
 def Find_Node(pos, WIDTH):
+    # Encuentra la casilla correspondiente a una posición en píxeles
     interval = WIDTH / 8
     y, x = pos
     rows = y // interval
@@ -103,6 +110,7 @@ def Find_Node(pos, WIDTH):
     return pos
 
 def machine_move(boardCopy):
+    # Realiza el movimiento de la máquina
     max = -99999
     movement = ""
     legal_moves = [str(mov) for mov in boardCopy.legal_moves]
@@ -115,10 +123,10 @@ def machine_move(boardCopy):
     
     return movement
 
-
-def alphabeta_pruning(boardCopy,movement,depth,alpha,beta,maximizingPlayer):
+def alphabeta_pruning(boardCopy, movement, depth, alpha, beta, maximizingPlayer):
+    # Algoritmo minimax con poda alfa-beta
     if depth == 0:
-        return evaluateBoard(boardCopy,movement)
+        return evaluateBoard(boardCopy, movement)
     
     boardCopy.push(chess.Move.from_uci(movement))
     legal_moves = [str(mov) for mov in boardCopy.legal_moves]
@@ -126,21 +134,22 @@ def alphabeta_pruning(boardCopy,movement,depth,alpha,beta,maximizingPlayer):
     if maximizingPlayer:
         value = -999999
         for move in legal_moves:
-            value = max(value,alphabeta_pruning(boardCopy.copy(),move,depth-1,alpha,beta,False))
+            value = max(value, alphabeta_pruning(boardCopy.copy(), move, depth-1, alpha, beta, False))
             if value >= beta:
                 break
-            alpha = max(alpha,value)
+            alpha = max(alpha, value)
         return value
     else:
         value = 999999
         for move in legal_moves:
-            value = min(value,alphabeta_pruning(boardCopy.copy(),move,depth-1,alpha,beta,True))
+            value = min(value, alphabeta_pruning(boardCopy.copy(), move, depth-1, alpha, beta, True))
             if value <= alpha:
                 break
-            beta = min(beta,value)
+            beta = min(beta, value)
         return value
 
-def evaluateBoard(boardCopy,movement):
+def evaluateBoard(boardCopy, movement):
+    # Evalúa el valor del tablero después de realizar un movimiento
     value = 0
     boardCopy.push(chess.Move.from_uci(movement))
     for i in range(8):
@@ -150,33 +159,34 @@ def evaluateBoard(boardCopy,movement):
     return value
 
 def getValueOfPiece(letter):
-        if letter == 'r':
-            return 50
-        if letter == 'n':
-            return 30
-        if letter == 'b':
-            return 30
-        if letter == 'q':
-            return 90
-        if letter == 'k':
-            return 900
-        if letter == 'p':
-            return 10
+    # Devuelve el valor numérico de una pieza de ajedrez
+    if letter == 'r':
+        return 50
+    if letter == 'n':
+        return 30
+    if letter == 'b':
+        return 30
+    if letter == 'q':
+        return 90
+    if letter == 'k':
+        return 900
+    if letter == 'p':
+        return 10
         
-        if letter == 'R':
-            return -50
-        if letter == 'N':
-            return -30
-        if letter == 'B':
-            return -30
-        if letter == 'Q':
-            return -90
-        if letter == 'K':
-            return -900
-        if letter == 'P':
-            return -10
+    if letter == 'R':
+        return -50
+    if letter == 'N':
+        return -30
+    if letter == 'B':
+        return -30
+    if letter == 'Q':
+        return -90
+    if letter == 'K':
+        return -900
+    if letter == 'P':
+        return -10
 
-        return 0
+    return 0
 
 def minMaxMax(boardCopy,movement,depth):
     if depth < 0:
@@ -211,6 +221,7 @@ def minMaxMin(boardCopy,movement,depth):
     return result
 
 
+
 def main(WIN, WIDTH):
     movement = ""
     selected_node = None  # Almacena la casilla seleccionada por el jugador
@@ -218,7 +229,7 @@ def main(WIN, WIDTH):
     player_turn = True  # Bandera para rastrear el turno del jugador
 
     while True:
-        pygame.time.delay(50)  ## Evita que la CPU se sobrecargue
+        pygame.time.delay(50)  # Evita que la CPU se sobrecargue
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()

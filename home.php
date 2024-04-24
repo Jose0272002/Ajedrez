@@ -22,16 +22,16 @@
         $password = "";
         $conn = mysqli_connect($servername, $username, $password, $database);
 
-            if (!$conn) {
-                die("connection failed: " . mysqli_connect_error());
-            }
+        if (!$conn) {
+            die("connection failed: " . mysqli_connect_error());
+        }
 
-            $sql = "select nombre,apellido1,apellido2,id,user from usuario where user='$user' and contrasena=md5('$pass')";
+        $sql = "select nombre,apellido1,apellido2,id,user from usuario where user='$user' and contrasena=md5('$pass')";
 
-            if (mysqli_query($conn, $sql)) {
+        if (mysqli_query($conn, $sql)) {
 
-                $resultado = mysqli_query($conn, $sql);
-                $fila = mysqli_fetch_row($resultado);
+            $resultado = mysqli_query($conn, $sql);
+            $fila = mysqli_fetch_row($resultado);
             if (isset($fila)) { //comprueba la select
                 $ima = scandir("./dirimg");
                 foreach ($ima as $i) { //comprueba si el directorio de la imagenes
@@ -40,7 +40,7 @@
                     }
                     if ($i == $fila[3]) { //si uno de los directorios es el id del ususario
                         if (isset($_FILES['imagen']) and $_FILES['imagen']['size'] != null) { //si se sube alguna imagen
-    
+
                             $archivos = array_map('unlink', glob("dirimg/$i/*.*")); // borra todo lo de dentro de la carpeta
                             subida($_FILES['imagen'], $i);
                             recortar($_FILES['imagen']['name'], $i);
@@ -84,7 +84,7 @@
         mysqli_close($conn);
 
 
-        ?>
+    ?>
         <form action="home.php" method="post" enctype="multipart/form-data" class="x">
             <input type="submit" value="cambiar imagen" class="z">
             <input type="file" name="imagen" id="imagen" class="z">
@@ -105,7 +105,7 @@
         <form action="acceso.php" method="post" class="x">
             <input type="submit" value="salir" class="zz">
         </form>
-        <?php
+    <?php
     } else {
         echo "<h1 style='color:red'>Necesitas hacer login</h1>";
         echo "<form action='acceso.php' method='post' >

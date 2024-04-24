@@ -458,7 +458,7 @@ function mostrarJaque() {
 		let ganador = turno;
 		enviar(ganador)
 		alert("victoria " + ganador)
-		window.history.back()
+		window.location.reload();
 
 	}
 	else if (document.querySelector('.rey.' + (turno === 'blanco' ? 'negro' : 'blanco'))) {
@@ -490,7 +490,7 @@ function eliminarMarcasCasillasDisponibles() {
 }
 
 //temporizador
-var duracionMinutos = 0.5;
+var duracionMinutos = 0.2;
 var duracionMilisegundos = duracionMinutos * 60 * 1000;
 var cuentaRegresivaElemento = document.getElementById("temporizador");
 
@@ -516,6 +516,7 @@ function actualizarCuentaRegresiva() {
 		finalizarTemporizador()
 		alert("gana " + ganador + " por tiempo")
 		enviar(ganador)
+		window.location.reload();
 
 	}
 	else if (diferencia < 0 && turno === "blanco") {
@@ -524,6 +525,7 @@ function actualizarCuentaRegresiva() {
 		finalizarTemporizador()
 		alert("gana " + ganador + " por tiempo")
 		enviar(ganador)
+		window.location.reload();
 
 	}
 }
@@ -552,7 +554,6 @@ function enviar(x) {
 	};
 	xhttp.open("POST", "partida.php", true);
 	xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-	alert("FCYTC")
 	console.log(x)
 	xhttp.send("ganador=" + encodeURIComponent(JSON.stringify(x)));
 }
